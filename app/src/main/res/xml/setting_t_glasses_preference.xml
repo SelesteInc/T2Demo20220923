@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/glasses_msg_title">
+        <Preference
+            android:key="TBattery"
+            android:defaultValue="0"
+            android:summary=""
+            android:title="@string/bettery">
+        </Preference>
+
+        <Preference
+            android:key="TStorage"
+            android:defaultValue="0"
+            android:summary=""
+            android:title="@string/storage"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/glasses_sys_title">
+
+<!--       <ListPreference android:title="@string/language"-->
+<!--           android:defaultValue="@string/language_zh"-->
+<!--           android:entries="@array/language"-->
+<!--           android:entryValues="@array/language"-->
+<!--           android:key="TLanguage"-->
+<!--           android:summary="@string/language_zh">-->
+<!--       </ListPreference>-->
+
+        <Preference
+            android:key="TVolume"
+            android:defaultValue="7"
+            android:summary="60"
+            android:title="@string/volume"/>
+
+
+        <ListPreference android:title="@string/glasses_photo_resolution_title"
+            android:defaultValue="2592*1944"
+            android:entryValues="@array/photoTResolution"
+            android:entries="@array/photoTResolution"
+            android:summary="2592*1944"
+            android:key="TGlassesPhoto">
+        </ListPreference>
+
+        <ListPreference android:title="@string/glasses_video_resolution_title"
+            android:defaultValue="1280*720"
+            android:entries="@array/videoResolution"
+            android:entryValues="@array/liveTResolutionValue"
+            android:key="TGlassesVideo"
+            android:summary="1280*720">
+        </ListPreference>
+
+        <ListPreference android:title="@string/glasses_video_time_title"
+            android:defaultValue="300"
+            android:entries="@array/videoDuration"
+            android:entryValues="@array/videoDurationValue"
+            android:key="TVideoDuration"
+            android:summary="5分钟">
+        </ListPreference>
+
+        <ListPreference android:title="@string/glasses_fps_title"
+            android:defaultValue="25"
+            android:entries="@array/fps"
+            android:entryValues="@array/fpsValue"
+            android:key="TFps"
+            android:summary="25帧">
+        </ListPreference>
+
+
+        <ListPreference android:title="@string/glasses_live_title"
+            android:defaultValue="1280*720"
+            android:entryValues="@array/liveTResolutionValue"
+            android:entries="@array/videoResolution"
+            android:summary="1280*720"
+            android:key="TLiveResolution">
+        </ListPreference>
+
+        <ListPreference android:title="@string/glasses_video_type_title"
+            android:defaultValue="264"
+            android:entries="@array/VideoType"
+            android:entryValues="@array/VideoTypeValue"
+            android:key="TVideoType"
+            android:summary="H264"/>
+
+
+        <SwitchPreference
+            android:title="@string/glasses_mute_title"
+            android:defaultValue="false"
+            android:key="TMuteEnabled"
+            android:summary="取消静音"/>
+
+        <SwitchPreference
+            android:title="@string/glasses_mic_mute_title"
+            android:defaultValue="false"
+            android:key="TMicMuteEnabled"
+            android:summary="取消MIC静音"/>
+
+        <Preference
+        android:key="TGlassesIp"
+        android:summary=""
+        android:title="@string/glasses_ip_title"/>
+
+
+        <Preference
+            android:key="TResetSettings"
+            android:summary="@string/factory_reset"
+            android:title="@string/reset"/>
+
+        <Preference
+            android:key="TUpgrade"
+            android:summary=""
+            android:title="@string/check_update"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

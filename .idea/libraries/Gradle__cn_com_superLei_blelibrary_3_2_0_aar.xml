@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="Gradle: cn.com.superLei:blelibrary:3.2.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/0a75bb9058649443bf43430c0165a808/transformed/jetified-blelibrary-3.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0a75bb9058649443bf43430c0165a808/transformed/jetified-blelibrary-3.2.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0a75bb9058649443bf43430c0165a808/transformed/jetified-blelibrary-3.2.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/55104104a4ae869c2e82f3651c511449/transformed/jetified-blelibrary-3.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/55104104a4ae869c2e82f3651c511449/transformed/jetified-blelibrary-3.2.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/55104104a4ae869c2e82f3651c511449/transformed/jetified-blelibrary-3.2.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/cn.com.superLei/blelibrary/3.2.0/f5645a10de93176aeb9d9f4eb354caed4b2364f1/blelibrary-3.2.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/cn.com.superLei/blelibrary/3.2.0/9bd9fa90858d04e1cd0f504deef7cdd3e22c8bae/blelibrary-3.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

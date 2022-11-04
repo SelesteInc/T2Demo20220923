@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.weseeing.t2demo.ui.widget.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imgView"
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/tvProgress"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textColor="@android:color/white"-->
+<!--        android:text="100%"-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_centerInParent="true">-->
+<!--    </TextView>-->
+
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progress"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:indeterminate="false"-->
+<!--        android:max="100"-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        style="@style/LoadingProgressBar" />-->
+
+    <ImageView
+        android:id="@+id/videoIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_video"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imgCheckBox"-->
+<!--        android:layout_width="20dp"-->
+<!--        android:layout_height="20dp"-->
+<!--        android:layout_margin="6dp"-->
+<!--        android:background="@drawable/pic_selector_holo"-->
+<!--        android:layout_alignTop="@+id/imgView"-->
+<!--        android:layout_alignRight="@+id/imgView"-->
+<!--        android:visibility="gone"/>-->
+
+</com.weseeing.t2demo.ui.widget.SquareLayout>

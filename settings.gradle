@@ -1,0 +1,4 @@
+include ':app'
+include ':see_framework'
+rootProject.name='T2Demo'
+
