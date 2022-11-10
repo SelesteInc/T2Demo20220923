@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -44,20 +45,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="0dp"
-                android:text="配网模式" />
+                android:text="Distribution mode" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <Button
-                    android:id="@+id/btnT2PairNetwork"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="T2配网"
-                     />
 
                 <Button
                     android:id="@+id/btnT2PlusPairNetwork"
@@ -65,15 +58,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="T2Plus配网"
-                     />
+                    android:text="T2Plus" />
             </LinearLayout>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ftp服务器" />
+                android:text="Ftp server" />
 
             <TextView
                 android:id="@+id/tvFtpInfo"
@@ -88,14 +80,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/btnFtpStart"
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Ftp启动"
-                     />
+                    android:text="Ftp start" />
 
                 <Button
                     android:id="@+id/btnFtpStop"
@@ -103,64 +95,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Ftp停止"
-                     />
+                    android:text="Ftp stop" />
             </LinearLayout>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="命令集合" />
+                android:text="collection of commands" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/btnPhoto"
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="拍照"
-                     />
+                    android:text="photo" />
 
-                <Button
-                    android:id="@+id/btnStartVideo"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="录像"
-                     />
-
-                <Button
-                    android:id="@+id/btnStopVideo"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="停止"
-                     />
                 <Button
                     android:id="@+id/btnLive"
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="直播"
-                     />
-
-
-                <Button
-                    android:id="@+id/btnAlbum"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="相册"
-                     />
+                    android:text="btnLive" />
 
 
             </LinearLayout>
@@ -168,22 +131,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <Button
-                    android:id="@+id/btnStatus"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="状态"
-                     />
-                <Button
-                    android:id="@+id/btnAudio"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="提示音"
-                     />
 
 
                 <Button
@@ -192,16 +139,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="重启"
-                     />
+                    android:text="restart" />
+
                 <Button
                     android:id="@+id/btnShutdown"
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="关机"
-                     />
+                    android:text="shutdown" />
 
                 <Button
                     android:id="@+id/btnUnbind"
@@ -209,8 +155,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="解绑"
-                     />
+                    android:text="unbind" />
             </LinearLayout>
 
             <TextView

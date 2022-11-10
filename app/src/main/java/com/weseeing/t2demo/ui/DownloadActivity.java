@@ -248,14 +248,14 @@ public class DownloadActivity extends AppCompatActivity {
     public void onPictureDownload(View view){
         Log.d("TESTINGTAG","DownloadActivity,onPictureDownload method reached start");
         //图片名称，测试请使用上面列表获取的文件名称 Image name, please use the file name obtained from the above list for testing
-        String pictureName = "IMG_20200601_000040_66.jpeg";
+        String pictureName = "IMG_20221107_101357_621.jpeg";
 
         String url =  String.format(mPictureDownload,mIp,pictureName);
 
         //创建下载任务,downloadUrl就是下载链接 Create a download task, downloadUrl is the download link
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         //指定下载路径和下载文件名 Specify the download path and download file name
-        request.setDestinationInExternalPublicDir("/Download/", pictureName);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, pictureName);
         //获取下载管理器 Get a download manager
         DownloadManager downloadManager= (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         //将下载任务加入下载队列，否则不会进行下载 Add the download task to the download queue, otherwise it will not be downloaded

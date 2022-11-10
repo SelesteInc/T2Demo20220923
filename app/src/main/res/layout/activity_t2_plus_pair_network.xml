@@ -43,10 +43,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="搜索蓝牙设备，下拉刷新列表，上下滑动查找设备;"
+                android:text="Search for Bluetooth devices, pull down to refresh the list, swipe up and down to find devices;"
                 android:textColor="#000000"
 
                 />
@@ -93,12 +94,13 @@
                     android:lines="1"
                     android:maxLines="1"
                     android:text="Kj123456" />
+
                 <Button
                     android:id="@+id/btConfigNetwork"
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="设备配网"
+                    android:text="ConfigNetwork"
 
                     />
 
@@ -106,7 +108,7 @@
                     android:id="@+id/btBleGetIp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="获取设备IP"
+                    android:text="getIP"
 
                     />
             </LinearLayout>
@@ -149,11 +151,11 @@
 <!--            </LinearLayout>-->
 
             <TextView
-                android:layout_marginTop="5dp"
-
                 android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content"
-                android:text="WIFI命令通信功能;"
+                android:layout_marginTop="5dp"
+                android:text="WIFI command communication function:"
 
 
                 />
@@ -178,7 +180,7 @@
                     android:id="@+id/btIpConnect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="连接"
+                    android:text="connect"
 
                     />
             </LinearLayout>

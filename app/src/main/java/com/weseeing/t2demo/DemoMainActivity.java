@@ -30,7 +30,6 @@ import com.weseeing.t2demo.ui.AlbumActivity;
 import com.weseeing.t2demo.ui.DownloadActivity;
 import com.weseeing.t2demo.ui.LiveActivity;
 import com.weseeing.t2demo.ui.SettingActivity;
-import com.weseeing.t2demo.ui.T2PairNetworkActivity;
 import com.weseeing.t2demo.ui.T2PlusPairNetworkActivity;
 import com.weseeing.t2demo.utils.Constant;
 import com.weseeing.t2demo.utils.Utils;
@@ -40,6 +39,7 @@ import java.io.File;
 public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChannelCallback, View.OnClickListener {
 
     private static final String TAG = "DemoMainActivity" ;
+    private static final String BASETAG = "TST DemoMain";
 
     /**
      * 设备通信 Device communication
@@ -56,6 +56,7 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(BASETAG, "onCreate hit");
         super.onCreate(savedInstanceState);
         setupPermissions();
 
@@ -73,19 +74,14 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
         mFtpManage = SeeFtpServerManage.create();
         startFtp();
 
-        binding.btnT2PairNetwork.setOnClickListener(this);
         binding.btnT2PlusPairNetwork.setOnClickListener(this);
         binding.btnLive.setOnClickListener(this);
-        binding.btnAlbum.setOnClickListener(this);
+
         binding.btnFtpStart.setOnClickListener(this);
 
         binding.btnFtpStop.setOnClickListener(this);
         binding.btnPhoto.setOnClickListener(this);
-        binding.btnStartVideo.setOnClickListener(this);
-        binding.btnStopVideo.setOnClickListener(this);
         binding.btnUnbind.setOnClickListener(this);
-        binding.btnStatus.setOnClickListener(this);
-        binding.btnAudio.setOnClickListener(this);
 
         binding.btnShutdown.setOnClickListener(this);
         binding.btnReboot.setOnClickListener(this);
@@ -95,7 +91,7 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
         //设备通信管理 Device Communication Management
         int type = SeeDeviceChannel.isBindType(getApplication());
         if ( mSeeDevice == null ){
-            Log.e(TAG,"SeeDeviceChannel Create Type:"+type);
+            Log.e(BASETAG,"SeeDeviceChannel Create Type:"+type);
             mSeeDevice = SeeDeviceChannel.create(getApplication(),type ,null);
             //OkSocketOptions.setIsDebug(true);
             //SLog.setIsDebug(true);
@@ -104,7 +100,7 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
             if (mSeeDevice !=null && type != oldType  ){
                 SeeDeviceChannel.destroy(mSeeDevice.getType());
                 mSeeDevice = SeeDeviceChannel.create(getApplication(),type ,null);
-                Log.e(TAG,"SeeDeviceChannel ReCreate NewType:"+type +" oldType:"+oldType);
+                Log.e(BASETAG,"SeeDeviceChannel ReCreate NewType:"+type +" oldType:"+oldType);
             }
         }
     }
@@ -117,8 +113,8 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
     protected void onResume() {
         super.onResume();
         initSeeDevice();
-        binding.tvLocalIp.setText("本地IP:"+Utils.getLocalIp());
-        binding.tvDeviceIp.setText("设备IP:"+mSeeDevice.getAddress());
+        binding.tvLocalIp.setText("local IP:"+Utils.getLocalIp());
+        binding.tvDeviceIp.setText("Device IP:"+mSeeDevice.getAddress());
         mSeeDevice.addChannelCallback(this);
         Log.e(TAG,"onResume()"+this);
     };
@@ -145,41 +141,41 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        super.onCreateOptionsMenu(menu);
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//
+//        return true;
+//    }
 
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            if (isConnect()){
-                SettingActivity.launch(this);
-            }
-            return true;
-        }else if (id == R.id.action_download){
-            if (isConnect()){
-                DownloadActivity.launch(this);
-            }
-        }
-        else if (id == R.id.action_album){
-            AlbumActivity.launch(this);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            if (isConnect()){
+//                SettingActivity.launch(this);
+//            }
+//            return true;
+//        }else if (id == R.id.action_download){
+//            if (isConnect()){
+//                DownloadActivity.launch(this);
+//            }
+//        }
+//        else if (id == R.id.action_album){
+//            AlbumActivity.launch(this);
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        mSeeDevice.disconnect();
-//        mSeeDevice.removeChannelCallback(this);
+        mSeeDevice.disconnect();
+        mSeeDevice.removeChannelCallback(this);
         SeeDeviceChannel.destroy(mSeeDevice.getType());
     }
 
@@ -194,29 +190,29 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
         int type = mSeeDevice.getType();
         switch (data.getState()) {
             case SeeTCommState.CONNECTION_SUCCESS:
-                Toast.makeText(getApplication(),"眼镜连接成功！",Toast.LENGTH_SHORT).show(); // Glasses connected successfully
-                Log.d(TAG,"CONNECTION_SUCCESS");
+                Toast.makeText(getApplication(),"Glasses connected successfully！",Toast.LENGTH_SHORT).show(); // Glasses connected successfully
+                Log.e(TAG,"CONNECTION_SUCCESS");
                 initDevices(type);
             break;
             case  SeeTCommState.DISCONNECTION:
                 Log.e(TAG,"DISCONNECTION");
-                Toast.makeText(getApplication(),"眼镜断开连接！",Toast.LENGTH_SHORT).show(); // glasses disconnected
+                Toast.makeText(getApplication(),"glasses disconnected！",Toast.LENGTH_SHORT).show(); // glasses disconnected
                 break;
             case SeeTCommState.CONNECTION_FAILED:
                 Log.e(TAG,"CONNECTION_FAILED");
-                Toast.makeText(getApplication(),"眼镜连接失败！",Toast.LENGTH_SHORT).show(); // glasses connection failed
+                Toast.makeText(getApplication(),"glasses connection failed！",Toast.LENGTH_SHORT).show(); // glasses connection failed
                 break;
             case SeeTCommState.RECEIVE_SUCCESS:
                 SeeTCmdData cmdData = data.getData();
                 logRece(cmdData);
                 if (cmdData.getCommandID() == SeeT2CmdId.kMsgRestoreFactory
                   || cmdData.getCommandID() == SeeT2PlusCmdId.kMsgRestoreFactory){
-                    Toast.makeText(getApplication(),"恢复出厂成功！",Toast.LENGTH_SHORT).show(); // Factory reset was successful
+                    Toast.makeText(getApplication(),"Factory reset was successful！",Toast.LENGTH_SHORT).show(); // Factory reset was successful
                     mSeeDevice.unbind();
                 }
                 break;
              case SeeTCommState.UNBIND:
-                 Toast.makeText(getApplication(),"眼镜解绑成功！",Toast.LENGTH_SHORT).show(); // 眼镜解绑成功
+                 Toast.makeText(getApplication(),"unBound！",Toast.LENGTH_SHORT).show(); // 眼镜解绑成功
                  break;
             default:
                 break;
@@ -224,7 +220,8 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
     }
 
 
-    private void initDevices(final  int type){
+    private void initDevices(final int type){
+        Log.e(BASETAG,"MainActivity initDevices Hit");
         //连接需要同步时间 The connection needs to synchronize the time
         sendCmd(SeeTCmdDataHelperManage.getCmdDataTime(type));
 
@@ -240,9 +237,6 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
         binding.tvDeviceInfo.setText("");//清空日志 clear log
         int type = mSeeDevice.getType();
         switch (v.getId()){
-            case R.id.btnT2PairNetwork:
-                T2PairNetworkActivity.launch(this);
-                break;
             case R.id.btnT2PlusPairNetwork:
                 T2PlusPairNetworkActivity.launch(this);
                 break;
@@ -259,39 +253,39 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
             case R.id.btnPhoto:
                sendCmd(SeeTCmdDataHelperManage.getCmdDataShoot(type));
                 break;
-            case R.id.btnStartVideo:
-                sendCmd(SeeTCmdDataHelperManage.getCmdDataStarVideo(type));
-                break;
-            case R.id.btnStopVideo:
-                sendCmd(SeeTCmdDataHelperManage.getCmdDataStopVideo(type));
-                break;
+//            case R.id.btnStartVideo:
+//                sendCmd(SeeTCmdDataHelperManage.getCmdDataStarVideo(type));
+//                break;
+//            case R.id.btnStopVideo:
+//                sendCmd(SeeTCmdDataHelperManage.getCmdDataStopVideo(type));
+//                break;
             case R.id.btnUnbind:
                 mSeeDevice.unbind();
                 break;
-            case R.id.btnStatus:
-                sendCmd(SeeTCmdDataHelperManage.getCmdDataDevStatus(type));
-                break;
-            case R.id.btnAudio:
-                mAaudioType = mAaudioType > 18 ? 1:mAaudioType;
-                sendCmd(SeeTCmdDataHelperManage.getCmdDataAudioPlay(type,mAaudioType)); //开机启动提示音
-                mAaudioType++;
-                break;
+//            case R.id.btnStatus:
+//                sendCmd(SeeTCmdDataHelperManage.getCmdDataDevStatus(type));
+//                break;
+//            case R.id.btnAudio:
+//                mAaudioType = mAaudioType > 18 ? 1:mAaudioType;
+//                sendCmd(SeeTCmdDataHelperManage.getCmdDataAudioPlay(type,mAaudioType)); //开机启动提示音
+//                mAaudioType++;
+//                break;
             case R.id.btnReboot:
                 sendCmd(SeeTCmdDataHelperManage.getCmdDataDevReboot(type));
                 break;
             case R.id.btnShutdown:
                 sendCmd(SeeTCmdDataHelperManage.getCmdDataDevShutdown(type));
                 break;
-            case R.id.btnAlbum:
-                AlbumActivity.launch(this);
-                break;
+//            case R.id.btnAlbum:
+//                AlbumActivity.launch(this);
+//                break;
         }
     }
 
 
     private boolean isConnect(){
         if (mSeeDevice ==null || !mSeeDevice.isConnect()){
-            Toast.makeText(getApplication(),"眼镜未连接！",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplication(),"Glasses not connected！",Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -320,12 +314,15 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
         }
         try {
             mFtpManage.startFtp(Constant.ROOT_PATH,"admin","SeeU123456",2222);
-            Toast.makeText(getApplication(),"Ftp服务器启动成功！",Toast.LENGTH_SHORT).show(); // Ftp server started successfully
+            Log.d(BASETAG, "Ftp server started successfully");
+            Toast.makeText(getApplication(),"Ftp server started successfully！",Toast.LENGTH_SHORT).show(); // Ftp server started successfully
             binding.tvFtpInfo.setText(Utils.getFtpUrlInfo());
             binding.tvFtpInfo.setVisibility(View.VISIBLE);
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getApplication(),"Ftp服务器启动失败！",Toast.LENGTH_SHORT).show(); // Ftp server failed to start
+            Toast.makeText(getApplication(),"Ftp server failed to start！",Toast.LENGTH_SHORT).show(); // Ftp server failed to start
+            Log.d(BASETAG, "Ftp server failed to start");
+
         }
     }
 
@@ -336,16 +333,18 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
         binding.tvFtpInfo.setText("");
         binding.tvFtpInfo.setVisibility(View.GONE);
         mFtpManage.stopFtp();
-        Toast.makeText(getApplication(),"Ftp服务器停止！",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplication(),"Ftp server stopped！",Toast.LENGTH_SHORT).show();
     }
 
     private void sendCmd(SeeTCmdData cmdData){
         if (!isConnect())return;
         mSeeDevice.sendCmdData(cmdData);
+        Log.d(BASETAG + "sendCmd(See",cmdData.toString());
     }
 
     private void sendCmd(int id,String data){
         sendCmd(new SeeTCmdData(mSeeDevice.getType(),id,data));
+        Log.d(BASETAG + "sendCmd(int",data);
     }
 }
 
