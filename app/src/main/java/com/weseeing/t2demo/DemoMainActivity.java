@@ -51,6 +51,7 @@ import com.weseeing.t2demo.utils.Constant;
 import com.weseeing.t2demo.utils.Utils;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -63,6 +64,7 @@ import cn.com.heaton.blelibrary.ble.callback.BleConnectCallback;
 import cn.com.heaton.blelibrary.ble.callback.BleNotifyCallback;
 import cn.com.heaton.blelibrary.ble.callback.BleScanCallback;
 import cn.com.heaton.blelibrary.ble.callback.BleStatusCallback;
+import cn.com.heaton.blelibrary.ble.callback.BleWriteCallback;
 import cn.com.heaton.blelibrary.ble.model.BleDevice;
 import cn.com.heaton.blelibrary.ble.model.BleFactory;
 import cn.com.heaton.blelibrary.ble.model.ScanRecord;
@@ -102,8 +104,11 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
 
     private String ip="192.168.43.28";
 
+    protected String ssid = "aaa"; // hot spot ssid
+    protected String pwd = "12345678"; // hot spot password
+
     /*
-     * End T2Plus BLE Variables Below
+     * End T2Plus BLE Variables
      * */
 
 
@@ -681,9 +686,58 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
             });
 
             mHandler.sendEmptyMessageDelayed(MSG_ENABLENOTIFY,1000);
+            ble.stopScan();
+
+
+
+            // get ip
+            String jsonData = SeeTCmdHelper.setDefaultJson("");
+            SeeTCmdData cmdData =  getCmdData(SeeT2PlusCmdId.kMsgBtGetDevIP,jsonData);
+            writeChar(mBleDevice,cmdData.parseBle(),mServiceUuid,mCharacteristicUuid);
+
+            // config network
+            jsonData = SeeTCmdHelper.setWiFiJsonT2Plus(ssid,pwd);
+            cmdData = getCmdData(SeeT2PlusCmdId.kMsgGetWifiConnect,jsonData);
+            writeChar(mBleDevice,cmdData.parseBle(),mServiceUuid,mCharacteristicUuid);
 
         }
     };
+
+    private SeeTCmdData getCmdData(int cmdId,String data){
+        SeeTCmdData cmdData = new SeeTCmdData(mSeeDevice.getType(),cmdId,data);
+        Log.d(BASETAG + "getCmdData",cmdData.toString());
+        return cmdData;
+    }
+
+    protected void writeChar(BleDevice bleDevice, byte[] bytes, UUID serviceUuid, UUID characteristicUuid){
+        Log.e(TAG, "writeChar==data:\n" + ByteUtils.bytes2HexStr(bytes) +" \nserviceUuid:" +serviceUuid +" characteristicUuid:"+characteristicUuid);
+        Ble.getInstance().writeByUuid(
+                bleDevice,
+                bytes,
+                serviceUuid,
+                characteristicUuid,
+                new BleWriteCallback<BleDevice>() {
+
+                    @Override
+                    public void onWriteSuccess(BleDevice device, BluetoothGattCharacteristic characteristic) {
+                        try {
+                            Log.i(TAG, "succeed wirte feature to" + device.getBleName());
+                            SeeTCmdData cmdData = new SeeTCmdData(mSeeDevice.getType(),characteristic.getValue());
+                            String s = new String(cmdData.getData(), Charset.forName("utf-8"));
+                            Log.i(TAG, "onWriteSuccess: " + s);
+                        } catch (Exception e) {
+                            Log.e(TAG, "onWriteSuccess: " + e.getMessage());
+                        }
+
+                    }
+
+                    @Override
+                    public void onWriteFailed(BleDevice device, int failedCode) {
+                        super.onWriteFailed(device, failedCode);
+                        Log.e(TAG, "Failed to write feature\n:"+failedCode);
+                    }
+                });
+    }
 
     public static final int MSG_ENABLENOTIFY = 1;
     protected Handler mHandler = new Handler(Looper.getMainLooper()){
