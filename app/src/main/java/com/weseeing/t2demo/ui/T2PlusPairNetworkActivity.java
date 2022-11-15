@@ -33,7 +33,6 @@ import com.weseeing.framework.t.SeeTCmdData;
 import com.weseeing.framework.t.SeeTDataInfo;
 import com.weseeing.t2demo.R;
 import com.weseeing.t2demo.cmd.SeeT2PlusCmdId;
-import com.weseeing.t2demo.cmd.SeeTCmdDataHelperManage;
 import com.weseeing.t2demo.cmd.SeeTCmdHelper;
 import com.weseeing.t2demo.databinding.ActivityT2PlusPairNetworkBinding;
 import com.weseeing.t2demo.ui.adapter.BleRssiDevice;
@@ -59,12 +58,12 @@ import cn.com.heaton.blelibrary.ble.utils.ByteUtils;
 import cn.com.heaton.blelibrary.ble.utils.Utils;
 
 public class T2PlusPairNetworkActivity extends AppCompatActivity implements View.OnClickListener, SeeDeviceChannelCallback {
-    private static final String TAG = "T2PlusPairNetworkActivity";
-    private static final String BASETAG = "TST T2Plus";
+    private static final String T2TAG = "T2PlusPairNetworkActivity";
+    private static final String T2BASETAG2 = "TST T2Plus";
 
     public static final int REQUEST_GPS = 4001;
 
-    private ActivityT2PlusPairNetworkBinding binding;
+    private ActivityT2PlusPairNetworkBinding T2binding;
 
     private ScanAdapter adapter;
 
@@ -93,7 +92,7 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
     private SeeDeviceChannel mSeeDevice;
 
     public static void launch(Context context){
-        Log.d(BASETAG, "Launch hit");
+        Log.d(T2BASETAG2, "Launch hit");
         Intent intent = new Intent(context, T2PlusPairNetworkActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
@@ -113,10 +112,10 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(BASETAG, "onCreate hit");
+        Log.d(T2BASETAG2, "onCreate hit");
         super.onCreate(savedInstanceState);
-        binding = ActivityT2PlusPairNetworkBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        T2binding = ActivityT2PlusPairNetworkBinding.inflate(getLayoutInflater());
+        setContentView(T2binding.getRoot());
         init();
     }
     protected void init(){
@@ -128,10 +127,10 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
         checkBlueStatus();
 
 
-        binding.etIp.setText(SeeSettings.getLockedIp(this));
+        T2binding.etIp.setText(SeeSettings.getLockedIp(this));
 
-        binding.etSsid.setText(SeeSettings.getLockedSsid(this));
-        binding.etPwd.setText(SeeSettings.getLockedPwd(this));
+        T2binding.etSsid.setText(SeeSettings.getLockedSsid(this));
+        T2binding.etPwd.setText(SeeSettings.getLockedPwd(this));
 
         mSeeDevice = SeeDeviceChannel.create(getApplication(),SeeDeviceChannel.TYPE_T2PLUS_DEVICE,null);
         mSeeDevice.addChannelCallback(this);
@@ -142,7 +141,7 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
         }
 
         String connect = mSeeDevice.isConnect() ? "断开" : "连接"; // disconnect : connect
-        binding.btIpConnect.setText(connect);
+        T2binding.btIpConnect.setText(connect);
     }
 
     private void initBle() {
@@ -185,17 +184,17 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
      * 连接眼镜设备 Connect glasses device
      */
     private void connectDevice(){
-        connect( binding.etIp.getText().toString());
+        connect( T2binding.etIp.getText().toString());
     }
 
     private void connect(String ip){
         if (!mSeeDevice.isConnect() ) {
             mSeeDevice.connect(ip);
-            binding.btIpConnect.setEnabled(false);
+            T2binding.btIpConnect.setEnabled(false);
         } else {
-            binding.btIpConnect.setText("Disconnecting");
+            T2binding.btIpConnect.setText("Disconnecting");
             mSeeDevice.disconnect();
-            binding.btIpConnect.setEnabled(false);
+            T2binding.btIpConnect.setEnabled(false);
         }
     }
 
@@ -211,26 +210,26 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
         switch (data.getState()) {
             case SeeTCommState.CONNECTION_SUCCESS:
                 Toast.makeText(getApplication(),"Glasses connected successfully！",Toast.LENGTH_SHORT).show(); // Glasses connected successfully
-                binding.btIpConnect.setText("disconnect"); // disconnect
-                binding.btIpConnect.setEnabled(true);
+                T2binding.btIpConnect.setText("disconnect"); // disconnect
+                T2binding.btIpConnect.setEnabled(true);
                 initDevices();
                 break;
             case  SeeTCommState.DISCONNECTION:
                 Toast.makeText(getApplication(),"glasses disconnected！",Toast.LENGTH_SHORT).show(); // glasses disconnected
-                binding.btIpConnect.setText("connect"); // connect
-                binding.btIpConnect.setEnabled(true);
+                T2binding.btIpConnect.setText("connect"); // connect
+                T2binding.btIpConnect.setEnabled(true);
                 break;
             case SeeTCommState.CONNECTION_FAILED: ;
-                Log.e(TAG,"CONNECTION_FAILED");
+                Log.e(T2TAG,"CONNECTION_FAILED");
                 Toast.makeText(getApplication(),"Glasses connection failed!",Toast.LENGTH_SHORT).show(); // Glasses connection failed!
-                binding.btIpConnect.setText("connect"); // connect
-                binding.btIpConnect.setEnabled(true);
+                T2binding.btIpConnect.setText("connect"); // connect
+                T2binding.btIpConnect.setEnabled(true);
                 break;
             case SeeTCommState.RECEIVE_SUCCESS:
 
                 SeeTCmdData cmdData = data.getData();
-                binding.tvDeviceInfo.setText(cmdData.toString());
-                Log.d(TAG,"RECEIVE_SUCCESS:"+cmdData.toString());
+                T2binding.tvDeviceInfo.setText(cmdData.toString());
+                Log.d(T2TAG,"RECEIVE_SUCCESS:"+cmdData.toString());
                 if (SeeT2PlusCmdId.kMsgDevStatus == cmdData.getCommandID()){
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -252,7 +251,7 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
         //不同用户需求，是否需要设置ftp图片视频上传 Different user needs, whether to set ftp image and video upload
         sendCmd(SeeT2PlusCmdId.kMsgSetFtpParameters,SeeTCmdHelper.setFtpJson(com.weseeing.t2demo.utils.Utils.getLocalIp(),2222, "admin","SeeU123456"));
         sendCmd(SeeT2PlusCmdId.kMsgStartFtpPut,SeeTCmdHelper.setDefaultJson(""));
-        Log.d(BASETAG + "LOC_IP","LOCAL IP: " +com.weseeing.t2demo.utils.Utils.getLocalIp());
+        Log.d(T2BASETAG2 + "LOC_IP","LOCAL IP: " +com.weseeing.t2demo.utils.Utils.getLocalIp());
 
         //设备状态 device status
         sendCmd(SeeT2PlusCmdId.kMsgDevStatus,SeeTCmdHelper.setDefaultJson(""));
@@ -264,11 +263,11 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
             toast("Bluetooth device not connected！"); // Bluetooth device not connected
             return;
         }
-        binding.tvDeviceInfo.setText("");//清空日志 clear log
+        T2binding.tvDeviceInfo.setText("");//清空日志 clear log
         switch (v.getId()){
             case R.id.btConfigNetwork:
-                String ssid = binding.etSsid.getText().toString();
-                String pwd = binding.etPwd.getText().toString();
+                String ssid = T2binding.etSsid.getText().toString();
+                String pwd = T2binding.etPwd.getText().toString();
                 if (TextUtils.isEmpty(ssid)){
                     Toast.makeText(this, "SSid cannot be empty!！", Toast.LENGTH_SHORT).show(); // SSid cannot be empty!
                     return;
@@ -307,20 +306,20 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
     private void initAdapter() {
         bleRssiDevices = new ArrayList<>();
         adapter = new ScanAdapter(this, bleRssiDevices);
-        binding.recyclerView .setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        binding.recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        binding.recyclerView.getItemAnimator().setChangeDuration(300);
-        binding.recyclerView.getItemAnimator().setMoveDuration(300);
-        binding.recyclerView.setAdapter(adapter);
+        T2binding.recyclerView .setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        T2binding.recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        T2binding.recyclerView.getItemAnimator().setChangeDuration(300);
+        T2binding.recyclerView.getItemAnimator().setMoveDuration(300);
+        T2binding.recyclerView.setAdapter(adapter);
     }
     private void initLinsenter() {
-        binding.btConfigNetwork.setOnClickListener(this);
-        binding.btBleGetIp.setOnClickListener(this);
+        T2binding.btConfigNetwork.setOnClickListener(this);
+        T2binding.btBleGetIp.setOnClickListener(this);
 //        binding.btBleDeviceMode.setOnClickListener(this);
 //        binding.btBleUvcMode.setOnClickListener(this);
-        binding.btIpConnect.setOnClickListener(this);
+        T2binding.btIpConnect.setOnClickListener(this);
 
-        binding.tvAdapterStates.setOnClickListener(new View.OnClickListener() {
+        T2binding.tvAdapterStates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -328,10 +327,10 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
             }
         });
 
-        binding.swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        T2binding.swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                binding.swipeLayout.setRefreshing(false);
+                T2binding.swipeLayout.setRefreshing(false);
                 rescan();
             }
         });
@@ -348,9 +347,9 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
                     mConnectBle.enableNotifyByUuid(device,false,mServiceUuid,mCharacteristicUuid,null);
                     mConnectBle.enableNotifyByUuid(device,false,read_service_uuid,read_characerisric_uuid,null);
                     mConnectBle.disconnect(device);
-                    Log.e(TAG,"disconnect device:"+device.getBleAddress() +" isConnected:"+device.isConnected() );
+                    Log.e(T2TAG,"disconnect device:"+device.getBleAddress() +" isConnected:"+device.isConnected() );
                 }else {
-                    Log.e(TAG,"device:"+device.getBleAddress() +" isConnected:"+device.isConnected() );
+                    Log.e(T2TAG,"device:"+device.getBleAddress() +" isConnected:"+device.isConnected() );
 
                     mConnectBle.connect(device,connectCallback);
                 }
@@ -406,7 +405,7 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
         @Override
         public void onScanFailed(int errorCode) {
             super.onScanFailed(errorCode);
-            Log.e(TAG, "onScanFailed: "+errorCode);
+            Log.e(T2TAG, "onScanFailed: "+errorCode);
         }
     };
 
@@ -443,7 +442,7 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
         @Override
         public void onConnectCancel(BleDevice device) {
             super.onConnectCancel(device);
-            Log.e(TAG, "onConnectCancel: " + device.getBleName());
+            Log.e(T2TAG, "onConnectCancel: " + device.getBleName());
         }
 
         @Override
@@ -481,7 +480,7 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
         public void onReady(final BleDevice device) {
             super.onReady(device);
 
-            Log.e(TAG, "onReady device==:" + device.getBleAddress());
+            Log.e(T2TAG, "onReady device==:" + device.getBleAddress());
             //连接成功后，设置通知 After the connection is successful, set the notification
             mConnectBle.enableNotifyByUuid(device, true, mServiceUuid, mCharacteristicUuid, new BleNotifyCallback<BleDevice>() {
                 @Override
@@ -506,7 +505,7 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
                 jsonObject = new JSONObject(strRece);
                 if (jsonObject.has("ip")){
                     String ip = jsonObject.getString("ip");
-                    binding.etIp.setText(ip);
+                    T2binding.etIp.setText(ip);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -516,7 +515,7 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
 
     @Override
     protected void onDestroy() {
-        Log.e(TAG,"onDestroy");
+        Log.e(T2TAG,"onDestroy");
         disconnectAll();
         mSeeDevice.removeChannelCallback(this);
         super.onDestroy();
@@ -536,7 +535,7 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
     }
 
     protected void writeChar(BleDevice bleDevice, byte[] bytes, UUID serviceUuid, UUID characteristicUuid){
-        Log.e(TAG, "writeChar==data:\n" + ByteUtils.bytes2HexStr(bytes) +" \nserviceUuid:" +serviceUuid +" characteristicUuid:"+characteristicUuid);
+        Log.e(T2TAG, "writeChar==data:\n" + ByteUtils.bytes2HexStr(bytes) +" \nserviceUuid:" +serviceUuid +" characteristicUuid:"+characteristicUuid);
         Ble.getInstance().writeByUuid(
                 bleDevice,
                 bytes,
@@ -573,8 +572,8 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
 
             @Override
             public void onBluetoothStatusChanged(boolean isOn) {
-                BleLog.i(TAG, "onBluetoothStatusOn: Is bluetooth turned on?>>>>:" + isOn);
-                binding.llAdapterTip.setVisibility(isOn?View.GONE:View.VISIBLE);
+                BleLog.i(T2TAG, "onBluetoothStatusOn: Is bluetooth turned on?>>>>:" + isOn);
+                T2binding.llAdapterTip.setVisibility(isOn?View.GONE:View.VISIBLE);
                 if (isOn){
                     checkGpsStatus();
                 }else {
@@ -592,7 +591,7 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
             finish();
         }
         if (!ble.isBleEnable()) {
-           binding.llAdapterTip .setVisibility(View.VISIBLE);
+           T2binding.llAdapterTip .setVisibility(View.VISIBLE);
         }else {
             checkGpsStatus();
         }
@@ -603,13 +602,13 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
                 && !Utils.isGpsOpen(this)){
 
             new AlertDialog.Builder(this)
-                    .setTitle("提示") // hint
-                    .setMessage("为了更精确的扫描到Bluetooth LE设备,请打开GPS定位") // For more accurate scanning to Bluetooth LE devices, please turn on GPS positioning
-                    .setPositiveButton("确定", (dialog, which) -> {
+                    .setTitle("hint") // hint
+                    .setMessage("For more accurate scanning to Bluetooth LE devices, please turn on GPS positioning") // For more accurate scanning to Bluetooth LE devices, please turn on GPS positioning
+                    .setPositiveButton("Ok", (dialog, which) -> {
                         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         startActivityForResult(intent,REQUEST_GPS);
                     })
-                    .setNegativeButton("取消", null) // Cancel
+                    .setNegativeButton("Cancel", null) // Cancel
                     .create()
                     .show();
         }else {
@@ -622,14 +621,14 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
         mConnectBle.enableNotifyByUuid(mBleDevice,true,read_service_uuid,read_characerisric_uuid, new BleNotifyCallback<BleDevice>() {
             @Override
             public void onChanged(BleDevice device, BluetoothGattCharacteristic characteristic) {
-                BleLog.e(TAG, "onChanged==data:" + ByteUtils.toHexString(characteristic.getValue()));
+                BleLog.e(T2TAG, "onChanged==data:" + ByteUtils.toHexString(characteristic.getValue()));
                 //Log.e(TAG, "onChanged==data:" + ByteUtils.bytes2HexStr(characteristic.getValue()));
                 SeeTCmdData cmdData = new SeeTCmdData(mSeeDevice.getType(),characteristic.getValue());
                 //mTvLog.setText(cmdData.toString() );
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        binding.tvDeviceInfo.setText(cmdData.toString());
+                        T2binding.tvDeviceInfo.setText(cmdData.toString());
                         parseIp(cmdData);
                     }
                 });
@@ -639,14 +638,14 @@ public class T2PlusPairNetworkActivity extends AppCompatActivity implements View
 
    private SeeTCmdData getCmdData(int cmdId,String data){
        SeeTCmdData cmdData = new SeeTCmdData(mSeeDevice.getType(),cmdId,data);
-       Log.d(BASETAG + "getCmdData",cmdData.toString());
+       Log.d(T2BASETAG2 + "getCmdData",cmdData.toString());
        return cmdData;
    }
 
     private void sendCmd(int id,String data){
         if (!mSeeDevice.isConnect())return;
         mSeeDevice.sendCmdData(id, data);
-        Log.d(BASETAG + "sendCmd",data);
+        Log.d(T2BASETAG2 + "sendCmd",data);
     }
 
 }

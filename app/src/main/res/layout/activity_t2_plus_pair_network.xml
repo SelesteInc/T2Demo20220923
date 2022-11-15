@@ -25,13 +25,13 @@
         android:textColor="@android:color/white"
         android:text="Bluetooth adapter is disabled."/>
 
-    <TextView
-        android:id="@+id/tv_adapter_states"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:textColor="@android:color/white"
-        android:text="ENABLE"/>
+        <TextView
+            android:id="@+id/tv_adapter_states"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="ENABLE"
+            android:textColor="@android:color/white" />
     </LinearLayout>
     <ScrollView
         android:padding="16dp"
