@@ -135,6 +135,7 @@ public class DemoMainActivity extends AppCompatActivity implements SeeDeviceChan
         setContentView(binding.getRoot());
 
         init();
+        T2init();
     }
 
     private void init() {
